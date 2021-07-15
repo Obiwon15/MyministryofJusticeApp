@@ -1,0 +1,45 @@
+﻿@using ministryofjusticeDomain.Entities
+@model IEnumerable<Case>
+@{
+    ViewBag.Title = "Welcome";
+    Layout = "/Views/Shared/_DashboardLayout.cshtml";
+    var name = ViewBag.fullname;
+    var cases = Model;
+}
+<div class="card mb-4">
+    <div class="card-header">@ViewBag.Title</div>
+    <div class="card-body">
+
+        <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+            <tr>
+                <th>Case ID</th>
+                <th>Subject</th>
+                <th>Client email</th>
+                <th>Status</th>
+                <th>Reported at</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var caseModel in cases)
+            {
+                <tr>
+                    <td>@caseModel.CaseID</td>
+                    <td>@caseModel.ReportSubject</td>
+                    <td>@caseModel.Email</td>
+                    <td>
+                        <div class="badge badge badge-pill">@caseModel.StatusID</div>
+                    </td>
+                    <td>@caseModel.SubmitDate</td>
+                    <td class="d-flex">
+                        <a class="btn btn-secondary btn-sm" href="@Url.Action("CaseDetails", new {id = caseModel.Id})"><i data-feather="eye" class="mr-2"></i> View</a>
+                    </td>
+                </tr>
+            }
+
+            </tbody>
+        </table>
+
+    </div>
+</div>

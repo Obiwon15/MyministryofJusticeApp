@@ -1,0 +1,32 @@
+﻿@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
+    <div class="container-fluid">
+        <div class="page-header-content">
+            <div class="row align-items-center justify-content-between pt-3">
+                <div class="col-auto mb-3">
+                    <h1 class="page-header-title">
+                        <div class="page-header-icon">
+                            <i data-feather="user"></i>
+                        </div>
+                        Departments - @ViewBag.Title
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container mt-4">
+    <!-- Account page navigation-->
+    <nav class="nav nav-borders">
+        @Html.ActionLink("Manage Departments", "ManageDepartments", "Department", null, new {@class = "nav-link ml-0"})
+        @Html.ActionLink("Add Department", "CreateDepartment", "Department", null, new {@class = "nav-link"})
+    </nav>
+    <hr class="mt-0 mb-4"/>
+    @RenderBody()
+</div>
+
+@RenderSection("scripts", required: false)

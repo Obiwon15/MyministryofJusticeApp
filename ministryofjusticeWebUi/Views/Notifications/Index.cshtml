@@ -1,0 +1,48 @@
+﻿@using ministryofjusticeWebUi.Models
+@model IEnumerable<NotificationViewModel>
+
+@{
+    Layout = "~/Views/Notifications/_NotificationsLayout.cshtml";
+    ViewBag.Title = "Notifications";
+    var notifications = Model;
+}
+
+
+<div class="mb-4 mx-auto">
+    <!-- Dashboard activity timeline example-->
+    <div class="card card-header-actions h-100">
+        <div class="card-header">
+            Notifications
+        </div>
+        <div class="card-body">
+            @if (!notifications.Any())
+            {
+                <div class="py-4 text-center">
+                    <h2 class="text-primary-soft">No @ViewBag.Title</h2>
+                    <p class="text-muted font-italic">There are no @(ViewBag.Title != null ? ViewBag.Title.ToLower() : "notification ") yet</p>
+                </div>
+            }
+            else
+            {
+                foreach (var notification in notifications)
+                {
+                    <div class="timeline timeline-xs">
+                        <!-- Timeline Item 1-->
+                        <div class="timeline-item py-2">
+                            <div class="timeline-item-marker">
+                                <div class="timeline-item-marker-text">27 min</div>
+                                <div class="timeline-item-marker-indicator bg-green"></div>
+                            </div>
+                            <div class="timeline-item-content">
+                                <a class="font-weight-bold @(notification.IsViewed ? "text-muted" : "text-dark")"
+                                   href="@Url.Action("ViewNotification", new{ id = notification.Id })">
+                                    @notification.Message
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>

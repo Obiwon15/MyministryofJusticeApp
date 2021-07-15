@@ -1,0 +1,113 @@
+@model ministryofjusticeWebUi.Models.DashboardViewModel
+@{
+    ViewBag.Title = "Manage Accounts";
+    Layout = "_AdminLayout.cshtml";
+}
+
+<div class="card mb-4">
+    <div class="card-header">All Accounts</div>
+    <div class="card-body">
+        <div class="datatable">
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <div class="dataTables_length" id="dataTable_length">
+                        <label>
+                            Show
+                            <select name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select> entries
+                        </label>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 d-flex justify-content-end">
+                    <div>
+                        <a href="@Url.Action("CreateAccount", "Admin")" class="btn btn-outline-primary btn-sm d-inline-flex"><i class="fa fa-plus mr-1"></i> Add an account</a>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Department</th>
+                        <th>Roles</th>
+                        <th>Age</th>
+                        <th>Salary</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model.Users)
+                    {
+                        <tr>
+                            <td>@user.FullName</td>
+                            <td>@user.Email</td>
+                            <td>@(user.Department?.DepartmentName ?? "Not assigned")</td>
+                            <td>Roles</td>
+                            <td>61</td>
+                            <td>$320,800</td>
+                            <td>
+                                <div class="badge badge-primary badge-pill">Full-time</div>
+                            </td>
+                            <td class="d-flex">
+                                <div class="dropdown no-caret">
+                                    <button class="btn btn-datatable btn-icon btn-transparent-dark mr-2" id="dropdownAccount" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i data-feather="more-vertical"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right animated--fade-in-up" aria-labelledby="dropdownAccount">
+                                        <a class="dropdown-item text-primary" href="#!"><i data-feather="edit-2" class="mr-2"></i>Edit account</a>
+                                        <a class="dropdown-item text-purple" href="#!"><i data-feather="user-check" class="mr-2"></i>Assign role</a>
+                                    </div>
+                                </div>
+                                <button class="btn btn-datatable btn-icon btn-transparent-dark" data-toggle="modal" data-target="#deleteModal" onclick="deleteUser('@user.Id', '@user.FullName');">
+                                    <i data-feather="trash-2" class="text-danger"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!--Delete User Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel"><i data-feather="alert-circle" class="mr-2"></i>Delete account?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">�</span></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete <span id="userName">user account</span> <span id="userAccount" class="d-none">user id</span>?
+                <br/><i class="text-muted small">This change will be permanent</i>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">No, cancel</button>
+                <button class="btn btn-danger" type="button"><i data-feather="trash-2" class="mr-2"></i>Yes, delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts
+{
+    <script>
+        var delUserId = document.getElementById("userAccount");
+        var userName = document.getElementById("userName");
+
+        function deleteUser(userId, username) {
+            userName.innerText = username !== "" ? username : "account";
+            delUserId.innerText = userId;
+        }
+    </script>
+}

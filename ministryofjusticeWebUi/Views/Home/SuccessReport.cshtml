@@ -1,0 +1,27 @@
+﻿@using ministryofjusticeWebUi.Models
+@model CaseDetailsViewModel
+
+@{
+    ViewBag.Title = "SuccessReport";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+<div class="container mt-5">
+    <div class="row justify-content-center align-items-center text-center mt-5">
+        <div class="col-lg-8 mx-auto col-sm-offset-3">
+            <br><br> <h2 class="text-success">Success</h2>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 367.805 367.805" width="50" height="50">
+                <path d="M183.903.001c101.566 0 183.902 82.336 183.902 183.902s-82.336 183.902-183.902 183.902S.001 285.469.001 183.903C-.288 82.625 81.579.29 182.856.001h1.047z" fill="#3bb54a"/>
+                <path fill="#d4e1f4" d="M285.78 133.225L155.168 263.837l-73.143-72.62 29.78-29.257 43.363 42.841 100.833-100.833z"/>
+            </svg>
+            <h3>Dear,  @Model.Fullname </h3>
+
+            <p style="font-size:20px;" class="text-black-75">
+                Thank you for submiting your information. We have sent you an email containing your case id to track the preogress of your case.
+            </p>
+            <a href="@Url.Action("Index")" class="btn btn-success">Home</a>
+            <br><br>
+        </div>
+
+    </div>
+</div>
+

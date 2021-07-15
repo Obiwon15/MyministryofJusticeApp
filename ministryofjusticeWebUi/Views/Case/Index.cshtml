@@ -1,0 +1,119 @@
+﻿@using ministryofjusticeWebUi.Infrastructures
+@using ministryofjusticeWebUi.Models
+@model CaseListViewModel
+
+@{
+    Layout = "_CaseLayout.cshtml";
+    var Cases = Model.Cases;
+    var PageInfo = Model.PageInfo;
+}
+
+<!-- Cases page navigation-->
+<nav class="nav nav-borders">
+    @if (User.IsInRole("Attorney General"))
+    {
+        @Html.ActionLink("All Cases", "Index", null, new { @class = "nav-link ml-0" })
+        @Html.ActionLink("Pending Cases", "Index", new { status = "Pending" }, new { @class = "nav-link" })
+        @Html.ActionLink("Accepted Cases", "Index", new { status = "Accepted" }, new { @class = "nav-link" })
+        @Html.ActionLink("Rejected Cases", "Index", new { status = "Rejected" }, new { @class = "nav-link" })
+        @Html.ActionLink("Closed Cases", "Index", "Case", new { status = "Closed" }, new { @class = "nav-link" })
+
+    }
+
+    @if (User.IsInRole("Director of Department"))
+    {
+        @Html.ActionLink("Department Cases", "DepartmentCases", null, new { @class = "nav-link ml-0" })
+        @Html.ActionLink("Assigned Cases", "DepartmentCases", new { assigned = "Assigned" }, new { @class = "nav-link" })
+        @Html.ActionLink("Unassigned Cases", "DepartmentCases", new { assigned = "Unassigned" }, new { @class = "nav-link" })
+    }
+
+    @if (User.IsInRole("Lawyer"))
+    {
+        @Html.ActionLink("Assigned Cases", "AssignedCases", null, new { @class = "nav-link ml-0" })
+        @Html.ActionLink("Processing", "AssignedCases", new { assigned = "Assigned" }, new { @class = "nav-link" })
+        @Html.ActionLink("Not Processing", "AssignedCases", new { assigned = "Unassigned" }, new { @class = "nav-link" })
+    }
+
+</nav>
+<hr class="mt-2 mb-4" />
+
+<div class="card mb-4">
+    <div class="card-header">@ViewBag.Title</div>
+    <div class="card-body">
+        <div class="datatable">
+            @if (!Cases.Any())
+            {
+                <div class="py-4 text-center">
+                    <h2 class="text-primary-soft">No cases</h2>
+                    <p class="text-muted font-italic">There are no @(ViewBag.Title != null ? ViewBag.Title.ToLower() : "case ") yet</p>
+                </div>
+            }
+            else
+            {
+                <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>Case ID</th>
+                        <th>Subject</th>
+                        <th>Client email</th>
+                        <th>Status</th>
+                        <th>Reported at</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var caseModel in Cases)
+                    {
+                        <tr>
+                            <td>@caseModel.CaseID</td>
+                            <td>@caseModel.ReportSubject</td>
+                            <td>@caseModel.Email</td>
+                            <td>
+                                <div class="badge badge-@caseModel.GetBadgeColor() badge-pill">@caseModel.StatusID</div>
+                            </td>
+                            <td>@caseModel.SubmitDate</td>
+                            <td class="d-flex">
+                                <a class="btn btn-secondary btn-sm" href="@Url.Action("CaseDetails", new{ id = caseModel.Id })"><i data-feather="eye" class="mr-2"></i> View</a>
+                            </td>
+                        </tr>
+                    }
+
+                    </tbody>
+                </table>
+            }
+            <div class="row">
+
+                <div class="col-sm-12 col-md-5">
+                    <div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">Showing  @PageInfo.CurrentPage out of @PageInfo.TotalPages</div></div>
+                <div class="col-sm-12 col-md-6">
+                    <div class="d-flex w-100">
+                        <div class="btn-group ml-auto">
+                            @if (User.IsInRole("Attorney General"))
+                            {
+                                @Html.PageLinks(Model.PageInfo, x => Url.Action("Index", new { page = x, status = ViewBag.status }))
+                            }
+
+                            @if (User.IsInRole("Director of Department"))
+                            {
+                                @Html.PageLinks(Model.PageInfo, x => Url.Action("DepartmentCases", new { page = x, assigned = ViewBag.assigned }))
+                            }
+
+                            @if (User.IsInRole("Lawyer"))
+                            {
+                                @Html.PageLinks(Model.PageInfo, x => Url.Action("AssignLawyer", new { page = x }))
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--<div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
+<ul class="pagination">-->
+@*<li class="paginate_button page-item previous" id="dataTable_previous"><a href="#" aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="2" tabindex="0" class="page-link">2</a></li><li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="3" tabindex="0" class="page-link">3</a></li><li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="4" tabindex="0" class="page-link">4</a></li><li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="5" tabindex="0" class="page-link">5</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="dataTable" data-dt-idx="6" tabindex="0" class="page-link">6</a></li><li class="paginate_button page-item next disabled" id="dataTable_next"><a href="#" aria-controls="dataTable" data-dt-idx="7" tabindex="0" class="page-link">Next</a></li>*@
+<!--</ul>
+</div>-->

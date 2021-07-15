@@ -1,0 +1,48 @@
+﻿@using ministryofjusticeWebUi.Models
+@model IEnumerable<NotificationViewModel>
+
+@{
+    var recentNotications = Model.Where(n => !n.IsViewed);
+}
+
+<!-- Notifications Dropdown-->
+<li class="nav-item dropdown no-caret d-none d-sm-block mr-3 dropdown-notifications">
+    <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownAlerts" href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i data-feather="bell"></i>
+        @if (recentNotications.Any())
+        {
+            <sup><span class="badge badge-sm badge-danger small">@recentNotications.Count()</span></sup>
+        }
+    </a>
+    <div class="dropdown-menu dropdown-menu-right border-0 shadow animated--fade-in-up" aria-labelledby="navbarDropdownAlerts">
+        <h6 class="dropdown-header dropdown-notifications-header">
+            <i class="mr-2" data-feather="bell"></i>
+            Notifications
+        </h6>
+        @if (!recentNotications.Any())
+        {
+            <div class="dropdown-item dropdown-notifications-item">
+                <p class="text-muted font-italic text-center">No recent notifications</p>
+            </div>
+        }
+        else
+        {
+            foreach (var notification in recentNotications)
+            {
+                <!-- Example Alert 1-->
+                <a class="dropdown-item dropdown-notifications-item" 
+                   href="@Url.Action("ViewNotification", "Notifications", new{ id = notification.Id })">
+                    <div class="dropdown-notifications-item-icon bg-primary">
+                        <i data-feather="activity"></i>
+                    </div>
+                    <div class="dropdown-notifications-item-content">
+                        <div class="dropdown-notifications-item-content-details">December 29, 2020</div>
+                        <div class="dropdown-notifications-item-content-text">@notification.Message</div>
+                    </div>
+                </a>
+            }
+            
+        }
+        <a class="dropdown-item dropdown-notifications-footer" href="@Url.Action("Index", "Notifications")">View All Notifications</a>
+    </div>
+</li>

@@ -1,0 +1,52 @@
+﻿@using ministryofjusticeDomain.Enum
+@using ministryofjusticeWebUi.Models
+@model CaseDetailsViewModel
+
+<div class="my-3 p-3 bg-white rounded box-shadow">
+    <h6 class="border-bottom border-gray pb-2 mb-0">Case Update</h6>
+    <div class="media text-muted pt-3">
+        <p class="media-body pb-3 mb-0 lh-125 border-bottom border-gray" style="font-size: 16px;">
+            FULLNAME:
+            <strong class="d-block text-gray-dark">@Model.Fullname</strong>
+        </p>
+    </div>
+    <div class="media text-muted pt-3">
+        <p class="media-body pb-3 mb-0 lh-125 border-bottom border-gray" style="font-size: 16px;">
+            EMAIL ADDRESS:
+            <strong class="d-block text-gray-dark">@Model.Email</strong>
+        </p>
+    </div>
+    <div class="media text-muted pt-3">
+        <p class="media-body pb-3 mb-0 lh-125 border-bottom border-gray" style="font-size: 16px;">
+            CASE ID:
+            <strong class="d-block text-gray-dark">@Model.CaseID</strong>
+        </p>
+    </div>
+    <div class="media text-muted pt-3">
+        <p class="media-body pb-3 mb-0 lh-125 border-bottom border-gray" style="font-size: 16px;">
+            REPORT TITLE:
+            <strong class="d-block text-gray-dark">@Model.ReportSubject</strong>
+        </p>
+    </div>
+    <div class="media text-muted pt-3">
+        <p class="media-body pb-3 mb-0 lh-125 border-bottom border-gray" style="font-size: 16px;">
+           Additional Information
+            <strong class="d-block text-gray-dark">@Model.AdditionalInformation</strong>
+        </p>
+    </div>
+    <div class="media text-muted pt-3">
+        <p class="media-body pb-3 mb-0 lh-125 border-bottom border-gray mr-5" style="font-size: 16px;">
+            CASE STATUS:
+            <strong class="d-block text-@Model.GetTextColor()">@Model.StatusID</strong>
+        </p>
+    </div>
+    <div class="media text-muted pt-3">
+        <p class="media-body pb-3 mb-0 lh-125 border-bottom border-gray mr-5" style="font-size: 16px;">
+            Date Submitted:
+            <strong class="d-block text-gray-dark">@Model.SubmitDate</strong>
+        </p>
+    </div>
+    <small class="d-block text-right mt-3">
+        <a href="@Url.Action("Index", "Home")">Back</a>
+    </small>
+</div>

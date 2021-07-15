@@ -1,0 +1,25 @@
+﻿@{
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    ViewBag.Title = "Access Denied";
+}
+
+
+<div class="container mt-5">
+    <div class="row justify-content-center align-items-center text-center mt-5">
+        <div class="col-lg-8 mx-auto col-sm-offset-3">
+            <br><br> <h2 class="text-danger mt-5">Access Denied</h2>
+            <svg height="50" viewBox="0 0 512 512" width="50" xmlns="http://www.w3.org/2000/svg">
+                <path d="M453.332 0H58.668C26.3047 0 0 26.3047 0 58.668v394.664C0 485.6953 26.3047 512 58.668 512h394.664C485.6953 512 512 485.6953 512 453.332V58.668C512 26.3047 485.6953 0 453.332 0zm0 0" fill="#f44336"/>
+                <path d="M350.2734 320.1055c8.3399 8.3437 8.3399 21.8476 0 30.168-4.1601 4.16-9.621 6.25-15.0859 6.25-5.461 0-10.9219-2.09-15.082-6.25L256 286.164l-64.1055 64.1093c-4.1601 4.1602-9.621 6.25-15.082 6.25-5.4648 0-10.9258-2.0898-15.086-6.25-8.3398-8.3203-8.3398-21.8242 0-30.168L225.836 256l-64.1093-64.1055c-8.3399-8.3437-8.3399-21.8476 0-30.168 8.3437-8.3398 21.8242-8.3398 30.168 0L256 225.836l64.1055-64.1093c8.3437-8.3399 21.8242-8.3399 30.168 0 8.3398 8.3203 8.3398 21.8242 0 30.168L286.164 256zm0 0" fill="#fafafa"/>
+            </svg>
+            <h3>Cannot</h3>
+
+            <p style="font-size:20px;color:#5C5C5C;">
+                You cannot access this page.
+            </p>
+            <a href="@Url.Action("SubmitReport")" class="btn btn-success mb-5 text-white">Submit a report</a>
+            <br><br>
+        </div>
+
+    </div>
+</div>

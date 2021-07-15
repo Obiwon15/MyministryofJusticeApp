@@ -1,0 +1,35 @@
+﻿@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+
+<header class="page-header page-header-dark bg-gradient-primary-to-secondary mb-4">
+    <div class="container">
+        <div class="page-header-content pt-4">
+            <div class="row align-items-center justify-content-between">
+                <div class="col-auto mt-4">
+                    <h1 class="page-header-title">
+                        <span class="page-header-icon"><i data-feather="alert-circle"></i></span>
+                        Cases
+                    </h1>
+                    <div class="page-header-subtitle">Search for cases</div>
+                </div>
+            </div>
+            @{
+                Html.RenderAction("SearchForm");
+            }
+
+        </div>
+    </div>
+</header>
+
+<div class="container pt-4">
+    @RenderBody()
+</div>
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+
+}

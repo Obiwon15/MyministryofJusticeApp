@@ -1,0 +1,104 @@
+﻿@using ministryofjusticeWebUi.Models
+@using ministryofjusticeDomain.Enum
+@model CaseDetailsViewModel
+
+@{
+    var caseDetail = Model;
+}
+
+    <footer class="text-center mt-5">
+
+        @if (User.IsInRole("Attorney General"))
+        {
+
+            if (caseDetail.StatusID == Status.Closed)
+            {
+
+                <div class="text-small text-muted">
+                    <em>This case is closed.</em>
+                </div>
+            }
+            else if(caseDetail.StatusID == Status.Pending || caseDetail.StatusID == Status.Accepted || caseDetail.StatusID == Status.Rejected)
+            {
+                <h4 class="mb-3">Assign to department?</h4>
+                    <div class="mb-3">
+                         @if (caseDetail.StatusID != Status.Accepted)
+                          {
+                             <a class="btn btn-success mx-2 px-3" role="button"
+                             href="@Url.Action("AssignToDepartment", new {id = caseDetail.Id})">
+                                  <i class="mr-2" data-feather="check-square"></i>
+                                     Accept
+                                         </a>
+                            }
+                           
+                        @if (caseDetail.StatusID != Status.Rejected)
+                         {
+                              <a class="btn btn-danger mx-2 px-3" role="button"
+                                href="@Url.Action("RejectCase", new {id = caseDetail.Id})">
+                                <i class="mr-2" data-feather="thumbs-down"></i>
+                                 Reject
+                                </a>
+                         }
+                                    </div>
+                    
+                         <div class="text-small text-muted">
+                              <em>If accepted, it will be refered to @caseDetail.Department.DepartmentName department</em>
+                          </div>
+
+            }
+
+         }
+
+        @if (User.IsInRole("Lawyer"))
+        {
+   
+            <h4 class="mb-3">Procesing a case</h4>
+            
+            <div class="mb-3">
+            
+                @if (caseDetail.StatusID == Status.Assigned)
+                
+                {
+                    <a class="btn btn-success mx-2 px-3" role="button"
+                       href="@Url.Action("ProcessingCase", new {id = caseDetail.Id, status = Status.Processing})">
+                        <i class="mr-2" data-feather="check-square"></i>
+                        Process Case
+                       </a>
+                       }
+                        
+                @if (caseDetail.StatusID == Status.Processing)
+                {
+                    <a class="btn btn-success mx-2 px-3" role="button"
+                       href="@Url.Action("ProcessingCase", new {id = caseDetail.Id, status = Status.RequestClose})">
+                        <i class="mr-2" data-feather="check-square"></i>
+                        Request Close Case
+                    </a>
+                }
+            
+            </div>
+                                    
+            <div class="text-small text-muted">
+                <em>lawyer has accepted the case</em>
+            </div>
+            }
+
+             @if (User.IsInRole("Director of Department"))
+             {
+                 if (caseDetail.IsAccepted() && (caseDetail.StatusID == Status.Accepted || caseDetail.StatusID == Status.Assigned))
+                 {
+                     <h4 class="mb-3">Assign this case to a lawyer</h4>
+                     <div class="mb-3">
+                         <button class="btn btn-success mx-2 px-3" role="button"
+                                 type="button" data-toggle="modal" data-target="#assignLawyerModal">
+                             <i class="mr-2" data-feather="check-square"></i>
+                             Assign to a lawyer
+                         </button>
+
+                     </div>
+                     <div class="text-small text-muted">
+                         <em>lawyer has accepted the case</em>
+                     </div>
+                 }
+               
+             }
+    </footer>

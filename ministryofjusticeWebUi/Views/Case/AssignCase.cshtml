@@ -1,0 +1,99 @@
+﻿@using ministryofjusticeWebUi.Models
+@model AssignCaseViewModel
+
+@{
+    ViewBag.Title = "AssignCase";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    var vm = Model;
+}
+
+<header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
+    <div class="container-fluid">
+        <div class="page-header-content">
+            <div class="row align-items-center justify-content-between pt-3">
+                <div class="col-auto mb-3">
+                    <h1 class="page-header-title">
+                        <div class="page-header-icon">
+                            <i data-feather="user"></i>
+                        </div>
+                        Assign Lawyers - @ViewBag.Title
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container mt-4">
+    <article class="card mb-4">
+        <header class="card-header d-flex align-items-center">
+            <a class="btn btn-transparent-dark btn-icon" href="@Url.Action("DepartmentCases")">
+                <i data-feather="arrow-left"></i>
+            </a>
+            <div class="ml-3">
+
+                @if (vm.Case.Lawyer == null)
+                {
+                    <h2 class="my-3">
+                        Assign lawyer to case:#@vm.Case.CaseID
+                    </h2>
+                }
+
+            </div>
+        </header>
+        <div class="card-body">
+            @if (vm.Lawyers.Any())
+            {
+                <div class="mr-3 ">
+
+                    @foreach (var lawyer in vm.Lawyers)
+                    {
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <div>
+                                <h3>@lawyer.User.FullName</h3>
+                                @if (lawyer.AssignedCases != null)
+                                {
+                                    <p>@lawyer.AssignedCases.Count()</p>
+                                }
+                                else
+                                {
+                                    <p>no case</p>
+                                }
+                            </div>
+
+
+                            <div class="mb-3">
+                                @if (lawyer.AssignedCases != vm.Case)
+                                {
+                                    <a class="btn btn-success mx-2 px-3" role="button"
+                                       href="@Url.Action("AssignLawyer", "Case", new {id = vm.CaseId, lawyerId = lawyer.Id})">
+                                        <i class="mr-2" data-feather="check-square"></i>
+                                        Assign
+                                    </a>
+                                }
+                                else if (vm.Case.LawyerId == lawyer.Id)
+                                {
+                                    <a class="btn btn-success mx-2 px-3" role="button"
+                                       href="@Url.Action("UnAssignLawyer", "Case", new {id = vm.CaseId, lawyerId = lawyer.Id})">
+                                        <i class="mr-2" data-feather="check-square"></i>
+                                        UnAssign
+                                    </a>
+                                }
+
+                            </div>
+
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="py-4 text-center">
+                    <h2 class="text-primary-soft">No lawyers available!</h2>
+                    <p class="text-muted font-italic">There are no lawyers in this department yet</p>
+                </div>
+            }
+        </div>
+    </article>
+</div>

@@ -1,0 +1,84 @@
+﻿@model ministryofjusticeWebUi.Models.ManageCaseFilesViewModel
+
+@{
+    ViewBag.Title = "Case Files";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+
+}
+<div class="card mb-4">
+    <div class="card-header">
+        <a href="@Url.Action("CaseDetails","Case", new { id = Model.CaseId })">
+            <i data-feather="arrow-left"></i>
+        </a>All Case Files
+    </div>
+    <div class="card-body">
+        <div class="datatable">
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <div class="dataTables_length" id="dataTable_length">
+                        <label>
+                            Show entries
+                            <select name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 d-flex justify-content-end">
+                    <div>
+                        <a href="@Url.Action("UploadCaseFile","File", new { id = Model.CaseId})" class="btn btn-outline-primary btn-sm d-inline-flex"><i class="fa fa-plus mr-1"></i> Add new File</a>
+                    </div>
+                </div>
+            </div>
+            @if (Model.Files.Count() > 0)
+            {
+                <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>File Name</th>
+                            <th>Comments</th>
+                            <th>File Category</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var file in Model.Files)
+                        {
+                            <tr>
+                                <td>@file.Filename</td>                     
+                                <td>@file.Comments</td>
+                                <td>@file.FileCategory</td>
+                                <td class="d-flex">
+                                        <div class="dropdown no-caret m-auto pb-md-4">
+                                            <button class="btn btn-datatable btn-icon btn-transparent-dark mr-2" id="dropdownAccount" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i data-feather="more-vertical"></i>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-right animated--fade-in-up" aria-labelledby="dropdownAccount">
+                                                <a class="dropdown-item text-purple" target="_blank" href="@Url.Action("Download","File", new { path = file.FilePath})">
+                                                    <i data-feather="file"></i>View File
+                                                </a>
+                                                <a class="dropdown-item text-purple" href="@Url.Action("DeleteFile","File", new { id = file.Id, caseId = file.CaseId})">
+                                                    <i data-feather="trash-2" class="text-danger"></i>Delete
+                                                </a>
+                                            </div>
+                                        </div>
+                                  
+                                   
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+
+            }
+            else
+            {
+                <p class="text-black-50 text-center">No Files yet</p>
+            }
+        </div>
+    </div>
+</div>

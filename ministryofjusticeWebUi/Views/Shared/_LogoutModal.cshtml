@@ -1,0 +1,25 @@
+﻿<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new {@id = "logoutForm"}))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    @*<a href="javascript:;"onclick="document.forms[0].submit();" class="btn btn-warning">Logout</a>*@
+                    <a href="javascript:document.getElementById('logoutForm').submit()" class="btn btn-primary">Log off</a>
+
+                </div>
+            }
+        </div>
+    </div>
+</div>

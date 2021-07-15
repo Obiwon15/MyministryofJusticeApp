@@ -1,0 +1,98 @@
+﻿@model ministryofjusticeWebUi.Models.CaseViewModel
+@{
+    ViewBag.Title = "SubmitReport";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<div class="site-section bg-light">
+    <div class="container">
+        <div class="mb-5 text-center">
+            <h2 class="section-heading"><strong class="text-black">Practice</strong> Areas</h2>
+            <p class="mb-5">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+        </div>
+        <div class="row">
+            <div class="col-lg-9 mb-5 mx-auto">
+                @using (Html.BeginForm("SubmitReport", "Home", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger small" })
+                    <div class="row mb-3 mb-md-4 align-items-center">
+                        <div class="col-md-6">
+                            @Html.LabelFor(m => m.Fullname)
+                            @Html.TextBoxFor(m => m.Fullname,
+                                new
+                                {
+                                    @class = "form-control",
+                                    @placeholder = "Fullname"
+                                })
+                            @Html.ValidationMessageFor(m => m.Fullname, "", new { @class = "text-danger small" })
+                        </div>
+                        <div class="col-md-6">
+                            @Html.LabelFor(m => m.Email)
+                            @Html.TextBoxFor(m => m.Email,
+                                new
+                                {
+                                    @class = "form-control",
+                                    @placeholder = "Email"
+                                })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+                    <div class="row mb-3 mb-md-4 align-items-center">
+                        <div class="col-md-6">
+                            @Html.LabelFor(m => m.GenderID)
+                            @Html.EnumDropDownListFor(m => m.GenderID, "-- Select Gender --", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.GenderID, "", new { @class = "text-danger small" })
+                        </div>
+                        <div class="col-md-6">
+                            @Html.LabelFor(m => m.DepartmentId)
+                            @Html.DropDownListFor(m => m.DepartmentId, new SelectList(Model.Departments, "Id", "DepartmentName"), "-- Select Report Type --", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+                    <div class="row mb-3 mb-md-4 align-items-center">
+                        <div class="col-md-6">
+                            @Html.LabelFor(m=>m.PhoneNumber)
+                            @Html.TextBoxFor(m => m.PhoneNumber,
+                                new
+                                {
+                                    @class = "form-control",
+                                    @placeholder = "Phone Number"
+                                })
+                            @Html.ValidationMessageFor(m => m.PhoneNumber, "", new {@class = "text-danger small"})
+                        </div>
+                        <div class="mb-3 mb-md-4 col-md-6">
+                            <label for="file">Evidence file</label>
+                            <input type="file" name="file" class="form-control" placeholder="Upload File" accept=".jpg, .png,.pdf" />
+                        </div>
+                    </div>
+                    <div class="row mb-3 mb-md-4 align-items-center">
+                        <div class="col-md-12 mb-3 mb-md-4">
+                            @Html.LabelFor(m => m.ReportSubject)
+                            @Html.TextBoxFor(m => m.ReportSubject,
+                                new
+                                {
+                                    @class = "form-control",
+                                    @placeholder = "Report Title"
+                                })
+                            @Html.ValidationMessageFor(m => m.ReportSubject, "", new { @class = "text-danger small" })
+                        </div>
+                        <div class="col-md-12">
+                            @Html.LabelFor(m => m.AdditionalInformation)
+                            @Html.TextAreaFor(m => m.AdditionalInformation, new { @class = "form-control", @id = "your_message", rows = 8, @placeholder = "Additional Information." })
+                            @Html.ValidationMessageFor(model => model.AdditionalInformation, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <input type="submit" value="Submit" class="btn btn-primary py-3">
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

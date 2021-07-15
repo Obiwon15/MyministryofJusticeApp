@@ -1,0 +1,20 @@
+﻿@using ministryofjusticeWebUi.Models
+@model SearchCasesViewModel
+
+<div class="page-header-search mt-4">
+    @using (Html.BeginForm("SearchResult", "Case", FormMethod.Post, new { @id = "searchForm" }))
+    {
+        @Html.AntiForgeryToken();
+        <div class="form-group">
+            @Html.EnumDropDownListFor(m => m.Category,
+                new { @class = "custom-select w-25 bg-gradient-light", @id = "inputGroupSelect01" })
+        </div>
+        <div class="input-group input-group-joined d-flex">
+            @Html.TextBoxFor(m => m.SearchValue,
+                new { @class = "form-control", placeholder = "Find case...", arialabel = "Search", autofocus = true })
+            <div class="input-group-append">
+                <button class="input-group-text"><i data-feather="search"></i></button>
+            </div>
+        </div>
+    }
+</div>

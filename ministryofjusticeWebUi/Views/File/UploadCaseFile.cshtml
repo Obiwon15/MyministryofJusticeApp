@@ -1,0 +1,104 @@
+﻿@model ministryofjusticeWebUi.Models.UploadFileViewModels
+
+@{
+    ViewBag.Title = "Upload File";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+@*<h2>Upload File For @Model.CaseID</h2>*@
+<header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
+    <div class="container-fluid">
+        <div class="page-header-content">
+            <div class="row align-items-center justify-content-between pt-3">
+                <div class="col-auto mb-3">
+                    <h1 class="page-header-title">
+                        <span class="page-header-icon">
+                            <a href="@Url.Action("ManageCaseFiles","File", new { id = Model.CaseId })" >
+                                <i data-feather="arrow-left"></i>
+                                </a>
+                        </span>
+                        Upload case file
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container">
+    <div class="card mb-4 col-md-8 col-lg-7 mx-auto">
+        <div class="card-header">@ViewBag.Title</div>
+        <div class="card-body">
+
+            @using (Html.BeginForm("UploadCaseFile", "File", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+
+                <div>
+                    @Html.TextBoxFor(m => m.CaseId,
+                        new
+                        {
+                            @style = "display: none;",
+                            @class = "form-control form-control-user hidden",
+                            @id = "exampleInputPassword",
+                            @placeholder = "Enter last name"
+                        })
+                    @Html.ValidationMessageFor(m => m.CaseId, "", new { @class = "text-danger small" })
+                </div>
+                <div class="row">
+                    <!--File name-->
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(m => m.Filename,
+                            new { @class = "col-md-6 control-label" })
+                        <div>
+                            @Html.TextBoxFor(m => m.Filename,
+                                new
+                                {
+                                    @class = "form-control form-control-user",
+                                    @id = "exampleInputPassword",
+                                    @placeholder = "Enter last name"
+                                })
+                            @Html.ValidationMessageFor(m => m.Filename, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.FileCategory,
+                            new { @class = "control-label" }
+                       )
+                        <div>
+                            @Html.EnumDropDownListFor(m => m.FileCategory, "-- Select File Category --", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.FileCategory, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Comments, htmlAttributes: new { @class = "control-label" })
+                    <div>
+                        @Html.EditorFor(model => model.Comments, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="file">Document</label>
+                    <div>
+                        <input type="file" name="file" class="custom-file" placeholder="Upload Document" accept=".jpg, .png,.pdf" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Upload" class="btn btn-purple" />
+                </div>
+            </div>
+
+            }
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

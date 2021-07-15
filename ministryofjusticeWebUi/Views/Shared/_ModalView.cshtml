@@ -1,0 +1,25 @@
+﻿@using ministryofjusticeWebUi.Models
+@model AssignCaseViewModel
+<div class="modal fade" id="ModalPopUp" role="dialog" />
+<div class="modal-dialog err-pop" style="">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body" style="text-align:center;">
+
+            @if (Model.Case.LawyerId == null)
+            {
+                <h2 class="my-3">
+                    Assign lawyer to case:#@Model.Case.CaseID
+                </h2>
+            }
+            else
+            {
+                <h2 class="my-3">
+                    Case has been Assigned to a lawyer, do you wish to un-assign this case:#@Model.Case.CaseID from the lawyer And Assign to Another lawyer
+                </h2>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,39 @@
+﻿@model ministryofjusticeWebUi.Models.RoleViewModel
+@{
+    Layout = "_RoleLayout.cshtml";
+    ViewBag.Title = "Create role";
+}
+
+<h1 class="text-primary-soft text-center">Create Roles</h1>
+<p class="text-center text-muted">
+    <i>--Add form here--</i>
+</p>
+<div class="card-body">
+    @using (Html.BeginForm("CreateRole", "Role", null, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger small" })
+        <!--First name-->
+        <div class="form-group">
+            @Html.LabelFor(m => m.Name,
+                new { @class = "col-md-6 control-label" })
+            <div>
+                @Html.TextBoxFor(m => m.Name,
+                    new
+                    {
+                        @class = "form-control form-control-user",
+                        @id = "exampleInputEmail",
+                        @placeholder = "Enter role name"
+                    })
+                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger small" })
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-user btn-block">
+            Create Role
+        </button>
+    }
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

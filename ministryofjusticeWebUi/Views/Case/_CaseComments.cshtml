@@ -1,0 +1,96 @@
+﻿@model ministryofjusticeWebUi.Models.CaseDetailsViewModel
+@*Comment Section*@
+
+<div class="container  justify-content-center mt-100 mb-100 w-100">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="card  p-3">
+                <div class="card-header">
+                    <h4 class="card-title">Recent Comments</h4>
+                    <h6 class="card-subtitle">Latest Comments section by users</h6>
+                </div>
+
+                <div class="card-body">
+                    @{
+                        foreach (var comment in Model.Comments)
+                        {
+                            <!--Comments-->
+                            <div class="comment-widgets mb-5" id="comment">
+
+
+                                <div>
+                                    <div class="comment-text active w-100">
+                                        <h5>@comment.User.FullName</h5>
+                                        <div class="comment-footer">
+                                            <span class="date">@comment.CreatedAt.ToShortDateString()</span> <span class="label label-success">Case Comment</span>
+                                            <span class="action-icons active"></span>
+                                        </div>
+                                        <p class="mb-2">@comment.CommentMessage</p>
+                                    </div>
+                                    <hr class="w-100" />
+                                </div>
+
+
+                            </div>
+                        }
+                    }
+
+                    <!--Comment form-->
+                    @using (Ajax.BeginForm("SaveComment", "Case", new AjaxOptions
+                    {
+                        HttpMethod = "POST",
+                        OnSuccess = "OnCommentSuccess",
+                        OnFailure = "OnCommentFailure"
+                    }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(a => a.Comment.ApplicationUserId)
+                        @Html.HiddenFor(a => a.Comment.CaseId)
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger small" })
+                        <div class="my-0">
+                            <div class="container mt-5">
+                                <div class="d-flex justify-content-center row">
+                                    <div class="d-flex flex-column comment-section col-12">
+                                        <div class="bg-light p-2">
+
+                                            <div class="d-flex flex-row align-items-start">
+                                                @Html.TextAreaFor(m => m.Comment.CommentMessage,
+                                                    new
+                                                    {
+                                                        @class = "form-control ml-1 shadow-none textarea",
+                                                        @id = "comment",
+                                                        @placeholder = " "
+                                                    })
+                                                @Html.ValidationMessageFor(m => m.Comment.CommentMessage, "", new { @class = "text-danger small" })
+                                            </div>
+                                            <div class="mt-2 text-right">
+                                                <button id="btnsubmit" class="btn btn-primary btn-sm shadow-none mr-1">Post comment</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function OnCommentSuccess(response) {
+        alert("successfully added a comment");
+        $("#comment").append(response);
+    }
+
+    function OnCommentFailure(response) {
+        console.log("fail to save comment");
+    }
+</script>

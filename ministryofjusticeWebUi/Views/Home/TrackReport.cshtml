@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "TrackReport";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+<div class="site-section bg-light">
+    <div class="container">
+        <div class="mb-5 text-center">
+            <h2 class="section-heading"><strong class="text-black">Case</strong> Status</h2>
+            <p class="mb-5">Enter your case to know the progress of your case</p>
+        </div>
+        <div class="row">
+            <div class="col-lg-9 mb-5 mx-auto">
+                @using (Ajax.BeginForm("TrackReport", "Home", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "CaseID" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger small" })
+                    <div class="row mb-3 mb-md-4 align-items-center">
+                        <div class="col-md-12">
+                            <input type="search" class="form-control" placeholder="Enter the case ID" name="caseId" required/>
+                        </div>
+                    </div>
+                    <div class="row align-items-center justify-content-center">
+                        <input type="submit" value="Search" class="btn btn-primary py-3">
+                    </div>
+                }
+            </div>
+            <div class="col-lg-9 mb-5 mx-auto">
+                <div id="CaseID"></div>
+            </div>
+            <div hidden="hidden">Loading</div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+}
+
+
+

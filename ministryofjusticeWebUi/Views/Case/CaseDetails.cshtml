@@ -1,0 +1,107 @@
+﻿@using ministryofjusticeDomain.Enum
+@using ministryofjusticeWebUi.Models
+@model CaseDetailsViewModel
+@{
+    Layout = "~/Views/Case/_CaseLayout.cshtml";
+    var caseDetail = Model;
+    ViewBag.Title = $"Details of {caseDetail.CaseID}";
+}
+
+
+<!-- Knowledge base article-->
+<article class="card mb-4">
+    <header class="card-header d-flex align-items-baseline justify-content-between">
+        <div class="d-flex align-items-center">
+            @if (User.IsInRole("Attorney General"))
+            {
+                <a class="btn btn-transparent-dark btn-icon" href="@Url.Action("Index")">
+                    <i data-feather="arrow-left"></i>
+                </a>
+            }
+            else if (User.IsInRole("Director of Department"))
+            {
+                <a class="btn btn-transparent-dark btn-icon" href="@Url.Action("DepartmentCases")">
+                    <i data-feather="arrow-left"></i>
+                </a>
+            }
+            else if (User.IsInRole("Lawyer"))
+            {
+                <a class="btn btn-transparent-dark btn-icon" href="@Url.Action("AssignedCases")">
+                    <i data-feather="arrow-left"></i>
+                </a>
+            }
+            <div class="ml-3">
+                <h2 class="mb-1">Subject: @caseDetail.ReportSubject</h2>
+                <h4 class="my-3">@caseDetail.CaseID</h4>
+                <div class="badge badge-md badge-@caseDetail.GetBadgeColor()">@caseDetail.StatusID</div>
+            </div>
+        </div>
+
+        <div class="text-md-right">
+            @if (!User.IsInRole("Director of Department"))
+            {
+                <a class="my-3 link list-inline ml-lg-10"
+                   href="@Url.Action("ManageCaseFiles", "File", new {id = caseDetail.Id})"> View Case Files</a>
+            }
+            @if(User.IsInRole("Director of Department") || User.IsInRole("Attorney General"))
+            {
+                if (caseDetail.LawyerId != null)
+                {
+                    <p class="text-black-75">Assigned Lawyer: @caseDetail.Lawyer.User.FullName</p>
+                }
+            }
+        </div>
+    </header>
+    <div class="card-body">
+        <div class="py-2 d-flex justify-content-between w-100 px-2">
+            <div class="person-detail">
+                <h4 class="text-black-50">Submitted by @caseDetail.Fullname</h4>
+                <p class="small mb-1">
+                    <span class="mr-3">Email: @caseDetail.Email</span>
+                </p>
+                <p class="m-0 small">Sex: @caseDetail.GenderID</p>
+            </div>
+            <div id="time-details">
+                <h4 class="text-black-50">Time Submitted</h4>
+                <p>@caseDetail.SubmitDate</p>
+            </div>
+
+
+        </div>
+        <hr class="mt-2 mb-5" />
+        <div class="px-md-4">
+            <h4>Case details:</h4>
+            <p class="lead">@caseDetail.AdditionalInformation</p>
+        </div>
+        <hr class="my-3" />
+        @*<h4 class="mb-4">Evidence documents:</h4>
+        <div class="row">
+            <div class="col-sm-6 col-md-3">
+                <div class="card shadow rounded w-100">
+                    <div class="card-header text-black-50">
+                        <i data-feather="file"></i>File 1
+                    </div>
+                    <div class="card-body text-center">
+                        <h2 class="text-gray-500 my-3">
+                            <i data-feather="file" class="text-black-50"></i>
+                        </h2>
+                        <a href="#file-path">View file</a>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+    </div>
+</article>
+@{
+    @Html.Partial("_CaseComments", Model)
+}
+
+
+
+<!-- Knowledge base rating-->
+@Html.Partial("_CaseActions", caseDetail)
+
+@if (User.IsInRole("Director of Department"))
+{
+    Html.RenderAction("ShowLawyers", new{ id=caseDetail.Id });
+}

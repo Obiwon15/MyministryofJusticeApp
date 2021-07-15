@@ -1,0 +1,77 @@
+﻿@using ministryofjusticeWebUi.Models
+@model AssignCaseViewModel
+
+@{
+    var vm = Model;
+}
+
+
+<div class="modal fade" id="assignLawyerModal" tabindex="-1" role="dialog" aria-labelledby="assignLawyerLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Assign Lawyer</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                @if (vm.Lawyers.Any())
+                {
+                    <div class="mr-3 ">
+
+                        @foreach (var lawyer in vm.Lawyers)
+                        {
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <div>
+                                    <h5>@lawyer.User.FullName</h5>
+                                    @if (lawyer.AssignedCases != null)
+                                    {
+                                        <p>@lawyer.AssignedCases.Count() @(lawyer.AssignedCases.Count() > 1 ? "cases" : "case")</p>
+                                    }
+                                    else
+                                    {
+                                        <p>no case</p>
+                                    }
+                                    @if (lawyer.Id == vm.Case.LawyerId)
+                                    {
+                                        <p class="small text-muted font-italic mt-n3">currently handling this case</p>
+                                    }
+                                </div>
+
+
+                                <div class="mb-3">
+                                    @if (vm.Case.LawyerId != lawyer.Id)
+                                    {
+                                        <a class="btn btn-success mx-2 px-3" role="button"
+                                           href="@Url.Action("AssignLawyer", "Case", new {id = vm.CaseId, lawyerId = lawyer.Id})">
+                                            <i class="mr-2" data-feather="check-square"></i>
+                                            Assign
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-secondary mx-2 px-3" role="button"
+                                           href="@Url.Action("UnAssignLawyer", "Case", new {id = vm.CaseId, lawyerId = lawyer.Id})">
+                                            <i class="mr-2" data-feather="x-square"></i>
+                                            UnAssign
+                                        </a>
+                                    }
+
+                                </div>
+
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="py-4 text-center">
+                        <h2 class="text-primary-soft">No lawyers available!</h2>
+                        <p class="text-muted font-italic">There are no lawyers in this department yet</p>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer"><button class="btn btn-danger" type="button" data-dismiss="modal">Close</button></div>
+        </div>
+    </div>
+</div>
